@@ -1,7 +1,6 @@
 package org.example.reggie.common;
 
 import lombok.Data;
-import org.example.reggie.entity.User;
 
 import java.util.HashMap;
 import java.util.Map;

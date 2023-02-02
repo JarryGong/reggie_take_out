@@ -1,4 +1,4 @@
-package org.example.reggie.entity;
+package org.example.reggie.config.entity;
 
 import lombok.Data;
 import java.io.Serializable;
