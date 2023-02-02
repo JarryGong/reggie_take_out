@@ -1,4 +1,4 @@
-package org.example.reggie.entity;
+package org.example.reggie.config.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
