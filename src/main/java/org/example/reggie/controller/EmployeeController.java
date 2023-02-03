@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.reggie.common.R;
 import org.example.reggie.entity.Employee;
 import org.example.reggie.service.EmployeeService;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +45,7 @@ public class EmployeeController{
         }
 
         //4.密码比对，如果不一致，则返回登陆失败结果
-        if (emp.getPassword().equals(password)){
+        if (!emp.getPassword().equals(password)){
             return R.error("登陆失败");
         }
 
@@ -57,5 +58,17 @@ public class EmployeeController{
         HttpSession session = request.getSession();
         session.setAttribute("employee",emp.getId());
         return R.success(emp);
+    }
+
+    /**
+     * 用户退出
+     * @param request
+     * @return
+     */
+    @PostMapping("/logout")
+    public R<String> logout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.removeAttribute("employee");
+        return R.success("退出成功");
     }
 }
