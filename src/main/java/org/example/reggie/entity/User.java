@@ -1,4 +1,4 @@
-package org.example.reggie.config.entity;
+package org.example.reggie.entity;
 
 import lombok.Data;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package org.example.reggie.config.entity;
+package org.example.reggie.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
