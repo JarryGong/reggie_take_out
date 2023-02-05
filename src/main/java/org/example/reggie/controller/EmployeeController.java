@@ -1,12 +1,10 @@
 package org.example.reggie.controller;
 
-import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.example.reggie.common.R;
 import org.example.reggie.entity.Employee;
 import org.example.reggie.service.EmployeeService;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,10 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.function.Function;
 
 @Slf4j
 @RestController
