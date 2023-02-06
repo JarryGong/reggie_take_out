@@ -28,7 +28,8 @@ public class GlobalExceptionHandler {
             String msg = split[9] + "已存在";
             //log.info("异常显提示：{}", Arrays.toString(split));
             return R.error(msg);
+        }else {
+            return R.error("未知错误");
         }
-        return R.error("未知错误");
     }
 }
