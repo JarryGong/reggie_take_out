@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 配置MyBatisPlus分页插件
+ * 配置MyBatisPlus分页插件（可以不配，默认自动配置动态代理）
  */
 @Configuration
 public class MyBatisPlusConfig {
