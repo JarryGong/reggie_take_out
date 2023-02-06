@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Slf4j
 @RestController
@@ -81,7 +80,7 @@ public class EmployeeController{
      */
     @PostMapping
     public R<String> Save(HttpServletRequest request,@RequestBody Employee employee){
-        log.info("新增员工 {} 员工信息",employee.toString());
+        log.info("新增员工 员工信息 {}",employee.toString());
         //获取身份证号后六位
         String idNumber = employee.getIdNumber().substring(employee.getIdNumber().length()-6);
         log.info("密码：{}",idNumber);
@@ -93,16 +92,22 @@ public class EmployeeController{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = simpleDateFormat.format(date);
         log.info("时间：{}",time);*/
+
         //第二种方法(1.8及之后开始支持)
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        //employee.setCreateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
+
         //获取当前用户的id
-        Long empId = (Long) request.getSession().getAttribute("employee");
+        //Long empId = (Long) request.getSession().getAttribute("employee");
+
         //创建该员工的用户，及当前登录操作的用户
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
+        //employee.setCreateUser(empId);
+        //employee.setUpdateUser(empId);
+
         //保存
         employeeService.save(employee);
+
+        log.info("新增员工 员工信息 {}",employee.toString());
 
         return R.success("新增员工成功");
     }
@@ -121,5 +126,41 @@ public class EmployeeController{
         //执行查询
         employeeService.page(pageInfo, queryWrapper);
         return R.success(pageInfo);
+    }
+
+    /**
+     * 根据id修改员工信息
+     * @param employee
+     * @return
+     */
+    @PutMapping
+    public R<String> update(HttpServletRequest request,@RequestBody Employee employee){
+        //获取当前线程id
+        long id = Thread.currentThread().getId();
+        log.info("当前线程id: {}",id);
+        //更新员工数据，启用或者禁用
+        //获取当前登录用户id
+        Long empId = (Long) request.getSession().getAttribute("employee");
+        log.info(employee.toString());
+        //设置更新此账号的用户
+        employee.setUpdateUser(empId);
+        //设置更新时间
+        employee.setUpdateTime(LocalDateTime.now());
+        //更新操作
+        employeeService.updateById(employee);
+        return R.success("员工信息修改成功");
+    }
+    @GetMapping("/{id}")
+    public R<Employee> display(@PathVariable("id") Long id){
+        log.info("从前端获取到的员工id: {}",id);
+        /*//使用查询包装类
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+
+        //根据id查询记录的sql
+        queryWrapper.eq(Employee::getId, id);
+        //查询此用户
+        Employee employee = employeeService.getOne(queryWrapper);*/
+        Employee employee = employeeService.getById(id);
+        return employee != null ? R.success(employee) : R.error("没有查询到对应员工信息");
     }
 }
