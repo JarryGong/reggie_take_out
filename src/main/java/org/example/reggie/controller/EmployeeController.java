@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
@@ -138,14 +137,15 @@ public class EmployeeController{
         //获取当前线程id
         long id = Thread.currentThread().getId();
         log.info("当前线程id: {}",id);
+
         //更新员工数据，启用或者禁用
         //获取当前登录用户id
-        Long empId = (Long) request.getSession().getAttribute("employee");
+        //Long empId = (Long) request.getSession().getAttribute("employee");
         log.info(employee.toString());
         //设置更新此账号的用户
-        employee.setUpdateUser(empId);
+        //employee.setUpdateUser(empId);
         //设置更新时间
-        employee.setUpdateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
         //更新操作
         employeeService.updateById(employee);
         return R.success("员工信息修改成功");
@@ -163,4 +163,5 @@ public class EmployeeController{
         Employee employee = employeeService.getById(id);
         return employee != null ? R.success(employee) : R.error("没有查询到对应员工信息");
     }
+
 }

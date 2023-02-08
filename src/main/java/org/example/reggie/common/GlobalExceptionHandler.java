@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
  * 全局异常处理
@@ -20,8 +20,8 @@ public class GlobalExceptionHandler {
      * 异常处理方法
      * @return
      */
-    @ExceptionHandler(Exception.class)
-    public R<String> exceptionHandler(Exception e){
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public R<String> exceptionHandler(SQLIntegrityConstraintViolationException e){
         log.info("异常信息：{}",e.getMessage());
         if (e.getMessage().contains("Duplicate entry")){
             String[] split = e.getMessage().split(" ");
@@ -31,5 +31,14 @@ public class GlobalExceptionHandler {
         }else {
             return R.error("未知错误");
         }
+    }
+    /**
+     * 异常处理方法
+     * @return
+     */
+    @ExceptionHandler(CustomException.class)
+    public R<String> exceptionHandler(CustomException e){
+        log.info("异常信息：{}",e.getMessage());
+        return R.error(e.getMessage());
     }
 }

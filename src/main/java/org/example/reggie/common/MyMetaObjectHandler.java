@@ -25,8 +25,8 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         log.info("当前线程id: {}",id);
         log.info("公共字段自动填充[insert]...");
         log.info(metaObject.toString());
-        metaObject.setValue("createUser", BaseContext.getCurrentId());
-        metaObject.setValue("updateUser", BaseContext.getCurrentId());
+        metaObject.setValue("createUser",BaseContext.getCurrentId());
+        metaObject.setValue("updateUser",BaseContext.getCurrentId());
         metaObject.setValue("createTime",LocalDateTime.now());
         metaObject.setValue("updateTime",LocalDateTime.now());
     }

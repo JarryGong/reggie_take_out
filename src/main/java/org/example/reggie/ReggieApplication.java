@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @Slf4j
 @SpringBootApplication
+@MapperScan("org.example.reggie.mapper")
 @ServletComponentScan
 public class ReggieApplication {
     public static void main(String[] args) {
