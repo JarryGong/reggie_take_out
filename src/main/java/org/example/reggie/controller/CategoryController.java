@@ -44,7 +44,7 @@ public class CategoryController{
     public R<Page> page(int page,int pageSize){
         log.info("page = {},pageSize = {}",page,pageSize);
         //构造分页构造器
-        Page pageInfo = new Page();
+        Page pageInfo = new Page(page,pageSize);
         //构造条件查询包装类
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         //添加排序条件，根据Sort字段排序
