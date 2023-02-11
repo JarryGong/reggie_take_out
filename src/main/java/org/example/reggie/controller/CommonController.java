@@ -3,6 +3,7 @@ package org.example.reggie.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.example.reggie.common.R;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -19,6 +21,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/common")
+@Transactional
 public class CommonController {
     @Value("${reggie.path}")
     private String basePath;
@@ -52,6 +55,7 @@ public class CommonController {
         try {
             //将指定文件转存到指定位置
             file.transferTo(new File(basePath+fileName));
+            log.info("当前日期 {}",LocalDate.now());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -70,7 +74,6 @@ public class CommonController {
             byte[] bytes = new byte[1024 * 1024];
             //输入流，通过输入流读取文件内容
             FileInputStream inputStream = new FileInputStream(basePath+name);
-
             //输出流，通过输出流将文件写回浏览器，在浏览器展示图片
             ServletOutputStream outputStream = response.getOutputStream();
             int length;

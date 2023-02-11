@@ -6,9 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.reggie.common.R;
 import org.example.reggie.entity.Category;
 import org.example.reggie.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 分类管理
@@ -16,11 +18,29 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/category")
+@Transactional
 public class CategoryController{
 
     @Resource
     private CategoryService categoryService;
 
+    /**
+     * 根据条件查询分类信息
+     * @param category
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Category>> dishCategoryList(Category category){
+        //构造条件查询包装类
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        //构造条件
+        queryWrapper.eq(category.getType()!=null,Category::getType, category.getType());
+        //添加排序条件
+        queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+        //通过Category中封装的type查询到name
+        List<Category> list = categoryService.list(queryWrapper);
+        return R.success(list);
+    }
     /**
      * 新增菜品分类
      * @param category

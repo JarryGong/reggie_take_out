@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.example.reggie.common.R;
 import org.example.reggie.entity.Employee;
 import org.example.reggie.service.EmployeeService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @RestController
 @RequestMapping("/employee")
+@Transactional
 public class EmployeeController{
     @Resource
     private EmployeeService employeeService;
