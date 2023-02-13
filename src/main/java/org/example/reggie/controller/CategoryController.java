@@ -24,7 +24,7 @@ public class CategoryController{
     @Resource
     private CategoryService categoryService;
 
-    /**
+    /**菜品修改页面回显分类信息
      * 根据条件查询分类信息
      * @param category
      * @return
@@ -88,6 +88,12 @@ public class CategoryController{
         categoryService.remove(ids);
         return R.success("删除成功");
     }
+
+    /**
+     * 更新菜品或套餐分类
+     * @param category
+     * @return
+     */
     @PutMapping
     public R<String> update(@RequestBody Category category){
         log.info("更新修改原始信息 {}",category.toString());

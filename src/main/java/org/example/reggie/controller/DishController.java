@@ -7,7 +7,6 @@ import org.example.reggie.common.R;
 import org.example.reggie.dto.DishDto;
 import org.example.reggie.entity.Category;
 import org.example.reggie.entity.Dish;
-import org.example.reggie.entity.DishFlavor;
 import org.example.reggie.service.CategoryService;
 import org.example.reggie.service.DishFlavorService;
 import org.example.reggie.service.DishService;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,29 +44,12 @@ public class DishController {
      * @return
      */
     @PostMapping
-    public R<String> saveCategory(@RequestBody DishDto dishDto){
+    public R<String> saveDish(@RequestBody DishDto dishDto){
         log.info(dishDto.toString());
-        //将关于dish的字段存放在dish表中，SpringBoot会先雪花算法生成id在进行相关操作
-        dishService.save(dishDto);
-        log.info(dishDto.toString());
-        //将dishDto中的自动生成的主键id取出
-        Long id = dishDto.getId();
-        //存放口味数据
-        List<DishFlavor> flavorList = dishDto.getFlavors().stream().map(dishFlavor -> {
-            //填充口味表中的dishId字段
-            dishFlavor.setDishId(id);
-            return dishFlavor;
-        }).collect(Collectors.toList());
-
-        //第一种方法
-        /*for (DishFlavor dishFlavor:list) {
-            //保存在dishFlavor表
-            dishFlavorService.save(dishFlavor);
-        }*/
-        //第二中方法
-        dishFlavorService.saveBatch(flavorList, flavorList.size());
+        dishService.saveByIdWithFlavor(dishDto);
         return R.success("添加菜品成功");
     }
+
     /**
      * 分页查询
      * @param page
@@ -135,8 +118,8 @@ public class DishController {
         return R.success(dishDtoPage);
     }
 
-    /**
-     * 根据id查询菜品信息和口味信息
+    /**菜品修改页面
+     * 根据id查询回显菜品信息和口味信息
      * @param id
      */
     @GetMapping("/{id}")
@@ -144,5 +127,42 @@ public class DishController {
         log.info(id.toString());
         DishDto dishDto = dishService.getByIdWithFlavor(id);
         return R.success(dishDto);
+    }
+
+    /**
+     * 修改菜品的同时更新口味表
+     * @param dishDto
+     * @return
+     */
+    @PutMapping
+    public R<String> updateDish(@RequestBody DishDto dishDto){
+        log.info(dishDto.toString());
+        dishService.updateByIdWithFlavor(dishDto);
+        return R.success("修改菜品成功");
+    }
+
+    /**
+     * 修改售卖状态
+     * @param updateStatus
+     * @param ids
+     * @return
+     */
+    @PostMapping("status/{updateStatus}")
+    public R<String> updateDishStatus(@PathVariable("updateStatus") Integer updateStatus,String[] ids){
+        log.info(updateStatus.toString(), Arrays.toString(ids));
+        dishService.updateDishStatus(updateStatus,ids);
+        return R.success("修改售卖状态成功");
+    }
+
+    /**
+     * 根据id删除菜品
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    public R<String> deleteDish(String[] ids){
+        log.info(Arrays.toString(ids));
+        dishService.deleteDish(ids);
+        return R.success("删除菜品成功");
     }
 }
