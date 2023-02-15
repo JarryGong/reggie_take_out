@@ -1,9 +1,9 @@
-/*
 package org.example.reggie.dto;
 
-import com.itheima.reggie.entity.Setmeal;
-import com.itheima.reggie.entity.SetmealDish;
 import lombok.Data;
+import org.example.reggie.entity.Setmeal;
+import org.example.reggie.entity.SetmealDish;
+
 import java.util.List;
 
 @Data
@@ -13,4 +13,3 @@ public class SetmealDto extends Setmeal {
 
     private String categoryName;
 }
-*/

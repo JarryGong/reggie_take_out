@@ -32,10 +32,10 @@ public interface DishService extends IService<Dish> {
     void updateDishStatus(Integer updateStatus,String[] ids);
 
     /**
-     * 根据id删除菜品
+     * 根据id删除菜品和对应口味
      *
      * @param ids
      * @return
      */
-    void deleteDish(String[] ids);
+    void deleteByIdWithFlavor(String[] ids);
 }

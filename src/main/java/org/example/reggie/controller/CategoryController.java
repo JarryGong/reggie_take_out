@@ -24,13 +24,13 @@ public class CategoryController{
     @Resource
     private CategoryService categoryService;
 
-    /**菜品修改页面回显分类信息
+    /**菜品或套餐修改页面回显分类信息
      * 根据条件查询分类信息
      * @param category
      * @return
      */
     @GetMapping("/list")
-    public R<List<Category>> dishCategoryList(Category category){
+    public R<List<Category>> categoryList(Category category){
         //构造条件查询包装类
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         //构造条件
@@ -61,14 +61,14 @@ public class CategoryController{
      * @return
      */
     @GetMapping("page")
-    public R<Page> page(int page,int pageSize){
+    public R<Page<Category>> page(int page, int pageSize){
         log.info("page = {},pageSize = {}",page,pageSize);
         //构造分页构造器
-        Page pageInfo = new Page(page,pageSize);
+        Page<Category> pageInfo = new Page<>(page, pageSize);
         //构造条件查询包装类
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         //添加排序条件，根据Sort字段排序
-        queryWrapper.orderByAsc(Category::getSort);
+        queryWrapper.orderByAsc(Category::getSort, Category::getCreateTime);
         //执行分页查询
         categoryService.page(pageInfo, queryWrapper);
         return R.success(pageInfo);

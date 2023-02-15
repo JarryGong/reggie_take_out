@@ -114,16 +114,16 @@ public class EmployeeController{
     }
 
     @GetMapping("/page")
-    public R<Page> page(int page,int pageSize,String name){
+    public R<Page<Employee>> page(int page,int pageSize,String name){
         log.info("page = {},pageSize = {},name = {}",page,pageSize,name);
         //构造分页构造器
-        Page pageInfo = new Page(page, pageSize);
+        Page<Employee> pageInfo = new Page<>(page, pageSize);
         //构造条件的构造器
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
         //添加过滤条件
         queryWrapper.like(StringUtils.isNotEmpty(name), Employee::getName, name);
         //添加排序条件
-        queryWrapper.orderByDesc(Employee::getUpdateTime);
+        queryWrapper.orderByDesc(Employee::getCreateTime);
         //执行查询
         employeeService.page(pageInfo, queryWrapper);
         return R.success(pageInfo);

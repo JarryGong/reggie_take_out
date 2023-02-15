@@ -135,24 +135,32 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
             //将id和修改的状态代码放进实体中
             dish.setId(id);
-            //更新售卖状态
+            //设置售卖状态
             dish.setStatus(updateStatus);
             return dish;
         }).collect(Collectors.toList());
-        //修改售卖状态
+        //更新售卖状态
         dishService.updateBatchById(dishes,dishes.size());
     }
 
     /**
-     * 根据id删除菜品
+     * 根据id删除菜品和对应口味
      * @param ids
      * @return
      */
     @Override
-    public void deleteDish(String[] ids) {
-        //删除菜品
+    public void deleteByIdWithFlavor(String[] ids) {
         for (String id:ids) {
+            //删除菜品
             dishService.removeById(id);
+
+            //构造条件查询包装类
+            LambdaQueryWrapper<DishFlavor> queryWrapper = new LambdaQueryWrapper<>();
+            //构造条件（根据dishId删除）
+            queryWrapper.eq(DishFlavor::getDishId, id);
+            //删除菜品对应口味
+            dishFlavorService.remove(queryWrapper);
         }
+
     }
 }

@@ -69,7 +69,7 @@ public class CommonController {
     public void download(@RequestParam("name") String name, HttpServletResponse response){
         try {
             //设置相应的文件类型
-            response.setContentType("image/jpeg");
+            response.setContentType("image/webp,image/apng,image/svg+xml,image/*,*/*");
             //创建一个byte数组
             byte[] bytes = new byte[1024 * 1024];
             //输入流，通过输入流读取文件内容

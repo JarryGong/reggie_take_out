@@ -1,9 +1,10 @@
-/*
 package org.example.reggie.dto;
 
-import com.itheima.reggie.entity.OrderDetail;
-import com.itheima.reggie.entity.Orders;
+
 import lombok.Data;
+import org.example.reggie.entity.OrderDetail;
+import org.example.reggie.entity.Orders;
+
 import java.util.List;
 
 @Data
@@ -20,4 +21,3 @@ public class OrdersDto extends Orders {
     private List<OrderDetail> orderDetails;
 	
 }
-*/

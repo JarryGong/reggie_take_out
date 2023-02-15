@@ -68,7 +68,7 @@ public class DishController {
         //添加过滤条件
         queryWrapper.like(name !=null,Dish::getName,name);
         //添加排序条件，根据Sort字段排序
-        queryWrapper.orderByAsc(Dish::getSort);
+        queryWrapper.orderByAsc(Dish::getSort).orderByAsc(Dish::getStatus).orderByDesc(Dish::getUpdateTime);
         //分页查询
         dishService.page(pageInfo, queryWrapper);
         //对象拷贝(拷贝属性)
@@ -151,18 +151,37 @@ public class DishController {
     public R<String> updateDishStatus(@PathVariable("updateStatus") Integer updateStatus,String[] ids){
         log.info(updateStatus.toString(), Arrays.toString(ids));
         dishService.updateDishStatus(updateStatus,ids);
-        return R.success("修改售卖状态成功");
+        return updateStatus == 0 ? R.success("停售成功") : R.success("启售成功");
     }
 
     /**
-     * 根据id删除菜品
+     * 根据id删除菜品和对应口味
      * @param ids
      * @return
      */
     @DeleteMapping
     public R<String> deleteDish(String[] ids){
         log.info(Arrays.toString(ids));
-        dishService.deleteDish(ids);
+        dishService.deleteByIdWithFlavor(ids);
         return R.success("删除菜品成功");
+    }
+
+    /**
+     * 将传过来的categoryId封装
+     * @param dish
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Dish>> dishByCategoryShow(Dish dish){
+        //构造条件查询包装类
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        //构造条件
+        queryWrapper.eq(dish.getCategoryId() != null,Dish::getCategoryId, dish.getCategoryId()).eq(Dish::getStatus,1);
+        //添加排序条件，用于展示的先后
+        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+        //通过categoryId查询其下的菜品
+        List<Dish> dishes = dishService.list(queryWrapper);
+        //返回dishes集合到前端
+        return R.success(dishes);
     }
 }
