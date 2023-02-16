@@ -157,7 +157,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             //构造条件查询包装类
             LambdaQueryWrapper<DishFlavor> queryWrapper = new LambdaQueryWrapper<>();
             //构造条件（根据dishId删除）
-            queryWrapper.eq(DishFlavor::getDishId, id);
+            queryWrapper.eq(id!=null,DishFlavor::getDishId, id);
             //删除菜品对应口味
             dishFlavorService.remove(queryWrapper);
         }
